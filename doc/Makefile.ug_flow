@@ -1,0 +1,10 @@
+default: build
+
+ug_flow.png: ug_flow.dot
+	-dot ug_flow.dot -Tpng -Kdot -o ug_flow.png
+    
+build: ug_flow.png
+
+clean:
+	rm -f ug_flow.dot.png
+

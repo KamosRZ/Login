@@ -1,0 +1,183 @@
+digraph game_states {
+    pad = 0.2
+    nodesep = 1
+    ranksep = 1
+
+    graph [
+        fontname = "Helvetica"
+        fontsize = 10
+    ]
+
+    node [
+        fontname = "Helvetica"
+        fontsize = 11
+        shape = "box"
+        height = 0.37
+    ]
+
+    edge [
+        fontname = "Helvetica"
+        fontsize = 11
+    ]
+
+    label = "Ultimatum game: states and transitions (v0.1)"
+
+    // Nodes
+    // ========
+
+    begin [
+        //label = "void"
+        shape = "point"
+        height = 0.1
+    ];
+
+    choice_new_or_existing [
+        label = "start new game OR join existing game?"
+    ]
+
+    choice_proposer_or_responder [
+        label = "start as proposer or responder?"
+    ]
+
+    start_new_game_as_proposer [
+        label = "start game as proposer\ncall API 1 with role=proposer"
+    ]
+
+    wait_for_responder_to_join [
+        label = "wait for responder to join\ncall API 6"
+    ]
+
+    propose_split [
+        label = "propose split\ncall API 4"
+    ]
+
+    wait_for_responder_to_act [
+        label = "wait for responder to act\ncall API 6"
+    ]
+
+    display_outcome [
+        label = "display outcome of game"
+    ]
+
+    start_new_game_as_responder [
+        label = "start game as proposer\ncall API 1 with role=responder"
+    ]
+
+    wait_for_proposer_to_join [
+        label = "wait for proposer to join\ncall API 6"
+    ]
+
+    wait_for_proposer_to_act [
+        label = "wait for proposer to act\ncall API 6"
+    ]
+
+    respond_to_split [
+        label = "respond to split\ncall API 5"
+    ]
+
+    get_outcome [
+        label = "get outcome\ncall API6"
+    ]
+
+    get_list_of_games_to_join [
+        label = "get list of games to join\ncall API 8"
+    ]
+
+    game_lacks_role [
+        label = "which role is missing in the game?"
+    ]
+
+    join_as_proposer [
+        label = "join as proposer\ncall API 2"
+    ]
+
+    join_as_responder [
+        label = "join as responder\ncall API 2"
+    ]
+
+    // Edges
+    // ========
+
+    begin -> choice_new_or_existing;
+
+    choice_new_or_existing -> choice_proposer_or_responder [
+        label = "new game"
+    ]
+
+    choice_new_or_existing -> get_list_of_games_to_join [
+        label = "existing game"
+    ]
+
+    choice_proposer_or_responder -> start_new_game_as_proposer [
+        label = "proposer"
+    ]
+
+    choice_proposer_or_responder -> start_new_game_as_responder [
+        label = "responder"
+    ]
+
+    start_new_game_as_proposer -> wait_for_responder_to_join;
+
+    start_new_game_as_responder -> wait_for_proposer_to_join;
+
+    wait_for_responder_to_join -> wait_for_responder_to_join [
+        label = "no responder yet"
+    ]
+
+    wait_for_responder_to_join -> propose_split [
+        label = "responder has joined"
+    ]
+
+    wait_for_proposer_to_join -> wait_for_proposer_to_join [
+        label = "no proposer yet"
+    ]
+
+    wait_for_proposer_to_join -> wait_for_proposer_to_act [
+        label = "proposer has joined"
+    ]
+
+    propose_split -> wait_for_responder_to_act;
+
+    wait_for_responder_to_act -> wait_for_responder_to_act [
+        label = "no responder action yet"
+    ]
+
+    wait_for_responder_to_act -> display_outcome [
+        label = "split is responded to"
+    ]
+
+    get_list_of_games_to_join -> choice_new_or_existing [
+        label = "no game appeals to the player"
+    ]
+
+    get_list_of_games_to_join -> game_lacks_role [
+        label = "game is chosen"
+    ]
+
+    game_lacks_role -> join_as_proposer [
+        label = "proposer"
+    ]
+
+    game_lacks_role -> join_as_responder [
+        label = "responder"
+    ]
+
+    join_as_proposer -> propose_split []
+
+    join_as_responder -> wait_for_proposer_to_act []
+
+    wait_for_proposer_to_act -> wait_for_proposer_to_act [
+        label = "no proposer action yet"
+    ]
+
+    wait_for_proposer_to_act -> respond_to_split [
+        label = "split is proposed"
+    ]
+
+    respond_to_split -> get_outcome;
+
+    get_outcome -> display_outcome;
+
+    display_outcome -> choice_new_or_existing;
+}
+
