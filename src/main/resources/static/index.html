@@ -1,73 +1,88 @@
 <!doctype html>
 <html lang="bg">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Login</title>
-    <meta name="description" content=""/>
-    <meta name="viewport" content="width=device-width"/>
-    <base href="/"/>
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
-    <script type="text/javascript">
-    $.get("/user", function(data) {
-        $("#user").html(data.userAuthentication.details.name);
-        $(".unauthenticated").hide()
-        $(".authenticated").show()      
-    $.ajax
-      ({
-        type: "POST",
-        url: 'https://ec2-34-209-175-216.us-west-2.compute.amazonaws.com:8080/user-service/api/user/create',
-        dataType: 'json',
-        contentType: 'application/json',
-        async: false,
-        data: JSON.stringify({"token": data.userAuthentication.details.id, "name" : data.userAuthentication.details.name}),
-        success: function (response) {
-        console.log("Success: " + response.success + " Message: " + response.message); 
-        }
-      });   
-    });
-    </script>
-    <script type="text/javascript">
-    var logout = function() {
-     $.post("/logout", function() {
-        $("#user").html('');
-        $(".unauthenticated").show();
-        $(".authenticated").hide();
-     })
-     return true;
-    }
-    </script>
-    <script type="text/javascript">
-    $.ajaxSetup({
-     beforeSend : function(xhr, settings) {
-      if (settings.type == 'POST' || settings.type == 'PUT'
-       || settings.type == 'DELETE') {
-       if (!(/^http:.*/.test(settings.url) || /^https:.*/
-         .test(settings.url))) {
-         xhr.setRequestHeader("X-XSRF-TOKEN",
-         Cookies.get('XSRF-TOKEN'));
-       }
-      }
-     }
-    });
-</script>
-</head>
-<body>
-	<h1>Login Service.</h1>
-        <div class="container unauthenticated">
-	<div>
-	With Facebook: <a href="/login/facebook">click here</a>
-	</div>
-        </div>
-        <div class="container authenticated" style="display:none">
-            Logged in as: <span id="user"></span>!
-            <div>
-              <button onClick="logout()" class="btn btn-primary">Logout</button>
-            </div>
-        </div>
-</body>
+	<head>
+	    <meta charset="utf-8"/>
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	    <title>Login</title>
+	    <meta name="description" content=""/>
+	    <meta name="viewport" content="width=device-width"/>
+	    <base href="/"/>
+	    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
+	    <link rel="stylesheet" type="text/css" href="webjars/font-awesome/4.7.0/css/font-awesome.css"/>
+	    <link rel="stylesheet" type="text/css" href="webjars/bootstrap-social/5.1.1/bootstrap-social.css"/>
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="/">Ultimatum game</a>
+		    </div>
+		    <div class="authenticated">
+		    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: none;">
+			      <ul class="nav navbar-nav navbar-right">
+			      	<p class="navbar-text">Signed in as <span id="user"></span></p>
+			        <li><a href="#" onClick="logout()">Logout</a></li>
+			      </ul>
+		    	</div>
+		    </div>
+		  </div>
+		</nav>
+		<div class="container unauthenticated">
+			<a class="btn btn-block btn-social btn-facebook" href="/login/facebook">
+	    		<span class="fa fa-facebook"></span> Sign in with Facebook
+	  		</a>
+		</div>	
+		<div class="authenticated">
+			<button type="button" class="btn btn-primary btn-lg btn-block">Start new game</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block">Join game</button>
+		</div>	
+		<script type="text/javascript" src="webjars/jquery/jquery.min.js"></script>
+	    <script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="webjars/js-cookie/js.cookie.js"></script>
+		
+	    <script type="text/javascript">
+	    	$(".authenticated").hide();
+		    $.get("/user", function(data) {
+		        $("#user").html(data.userAuthentication.details.name);
+		        $(".unauthenticated").hide()
+		        $(".authenticated").show()      
+		    $.ajax
+		      ({
+		        type: "POST",
+		        url: 'https://ec2-34-209-175-216.us-west-2.compute.amazonaws.com:8080/user-service/api/user/create',
+		        dataType: 'json',
+		        contentType: 'application/json',
+		        async: false,
+		        data: JSON.stringify({"token": data.userAuthentication.details.id, "name" : data.userAuthentication.details.name}),
+		        success: function (response) {
+		        console.log("Success: " + response.success + " Message: " + response.message); 
+		        }
+		      });   
+		    });
+	
+		    var logout = function() {
+		     $.post("/logout", function() {
+		        $("#user").html('');
+		        $(".unauthenticated").show();
+		        $(".authenticated").hide();
+		     })
+		     return true;
+		    }
+		    
+		    $.ajaxSetup({
+		     beforeSend : function(xhr, settings) {
+		      if (settings.type == 'POST' || settings.type == 'PUT'
+		       || settings.type == 'DELETE') {
+		       if (!(/^http:.*/.test(settings.url) || /^https:.*/
+		         .test(settings.url))) {
+		         xhr.setRequestHeader("X-XSRF-TOKEN",
+		         Cookies.get('XSRF-TOKEN'));
+		       }
+		      }
+		     }
+		    });
+		</script>
+	</body>
 
 </html>
