@@ -34,15 +34,52 @@
 	  		</a>
 		</div>	
 		<div class="authenticated">
-			<button type="button" class="btn btn-primary btn-lg btn-block">Start new game</button>
-			<button type="button" class="btn btn-primary btn-lg btn-block">Join game</button>
+			<form method="post" action="/game">
+			<input type="hidden" name="user" id="user">
+				<fieldset class="form-group">
+				    <legend>Menu</legend>
+				    <div class="form-check">
+				      <label class="form-check-label">
+				        <input type="radio" class="form-check-input" name="action" id="start-radio" value="start">
+				        Start new game
+				      </label>
+				    </div>
+				    <div class="form-check">
+				    	<label class="form-check-label">
+				        	<input type="radio" class="form-check-input" name="action" id="join-radio" value="join">
+				        Join game
+				      	</label>
+				    </div>
+			  </fieldset>
+			  <div class="form-group role-container">
+			    <label for="role-select">Select role</label>
+			    <select class="form-control" id="role" name="role">
+			      <option value="1">Proposer</option>
+			      <option value="2">Responder</option>
+			    </select>
+			  </div>
+			  <button type="submit" class="btn btn-primary">Go !</button>
+			</form>
 		</div>	
 		<script type="text/javascript" src="webjars/jquery/jquery.min.js"></script>
 	    <script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="webjars/js-cookie/js.cookie.js"></script>
 		
 	    <script type="text/javascript">
-	    	$(".authenticated").hide();
+	    
+		    $( document ).ready(function() {
+		    	$( "#start-radio" ).click(function() {
+			    	$( ".role-container" ).show();
+			    });
+			    	
+			    $( "#join-radio" ).click(function() {
+				    $( ".role-container" ).hide();
+				});
+			    
+			   	$(".role-container").hide();
+			    $(".authenticated").hide();
+		    });
+	    
 		    $.get("/user", function(data) {
 		        $("#user").html(data.userAuthentication.details.name);
 		        $(".unauthenticated").hide()
@@ -56,7 +93,7 @@
 		        async: false,
 		        data: JSON.stringify({"token": data.userAuthentication.details.id, "name" : data.userAuthentication.details.name}),
 		        success: function (response) {
-		        console.log("Success: " + response.success + " Message: " + response.message); 
+		        	$("#user").val(response.id);
 		        }
 		      });   
 		    });
