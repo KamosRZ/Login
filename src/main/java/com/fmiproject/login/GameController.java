@@ -14,12 +14,15 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fmiproject.login.dto.CreateGameDTO;
+import com.fmiproject.login.dto.JoinGameDTO;
+import com.fmiproject.login.dto.ListGames;
 import com.fmiproject.login.dto.ResponseDTO;
 
 @RestController
 public class GameController {
 	
 	private final static String START_GAME = "start";
+        private final static String JOIN_GAME = "join";
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -35,7 +38,12 @@ public class GameController {
 				     .body(new CreateGameDTO(userid, role));
 			ResponseEntity<ResponseDTO> responseDTO = restTemplate.exchange(request, ResponseDTO.class);
 			response = responseDTO.getBody().getData().getGame().getGameID();
-		}
+		} else if (action.equals(JOIN_GAME)) {             
+                        ResponseEntity<ListGames> game = restTemplate.getForEntity(
+                                        new URI("https://ug-game-api.azurewebsites.net/api/games/to_join"), ListGames.class);
+                        restTemplate.put(
+                                        new URI("https://ug-game-api.azurewebsites.net/game/" + com.fmiproject.login.dto.ListGames.firstgameID), new JoinGameDTO(userid));
+                }
 		return response;
 	}
 }
