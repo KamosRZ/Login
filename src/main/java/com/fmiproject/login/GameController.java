@@ -41,8 +41,6 @@ public class GameController {
 		} else if (action.equals(JOIN_GAME)) {             
                         ResponseEntity<ListGames> game = restTemplate.getForEntity(
                                         new URI("https://ug-game-api.azurewebsites.net/api/games/to_join"), ListGames.class);
-                        restTemplate.put(
-                                        new URI("https://ug-game-api.azurewebsites.net/game/" + com.fmiproject.login.dto.ListGames.firstgameID), new JoinGameDTO(userid));
                 }
 		return response;
 	}
