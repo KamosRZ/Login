@@ -8,18 +8,18 @@ public class Game implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Long gameID;
+	private String gameID;
 	private Long stateID;
 	/**
 	 * @return the gameID
 	 */
-	public Long getGameID() {
+	public String getGameID() {
 		return gameID;
 	}
 	/**
 	 * @param gameID the gameID to set
 	 */
-	public void setGameID(Long gameID) {
+	public void setGameID(String gameID) {
 		this.gameID = gameID;
 	}
 	/**

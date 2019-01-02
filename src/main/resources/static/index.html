@@ -34,8 +34,8 @@
 	  		</a>
 		</div>	
 		<div class="authenticated">
-			<form method="post" action="/game">
-			<input type="hidden" name="user" id="user">
+			<div class="menu">
+				<input type="hidden" name="userid" id="userid">
 				<fieldset class="form-group">
 				    <legend>Menu</legend>
 				    <div class="form-check">
@@ -58,8 +58,9 @@
 			      <option value="2">Responder</option>
 			    </select>
 			  </div>
-			  <button type="submit" class="btn btn-primary">Go !</button>
-			</form>
+			  <button type="submit" class="btn btn-primary" id="submit">Go !</button>
+			</div>
+			<span class="game-id"></span>
 		</div>	
 		<script type="text/javascript" src="webjars/jquery/jquery.min.js"></script>
 	    <script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -74,6 +75,16 @@
 			    	
 			    $( "#join-radio" ).click(function() {
 				    $( ".role-container" ).hide();
+				});
+			    
+			    $( "#submit" ).click(function() {
+			    	if ($('#start-radio').is(':checked')) {
+				    	$.post('/game', { userid: $("#userid").val(), action : "start", role : $("#role").val()}, 
+				    		    function(gameId){
+				    				$(".menu").hide();
+				    				$(".game-id").text("Created game id: " + gameId);
+				    		});
+			    	}		
 				});
 			    
 			   	$(".role-container").hide();
@@ -93,7 +104,7 @@
 		        async: false,
 		        data: JSON.stringify({"token": data.userAuthentication.details.id, "name" : data.userAuthentication.details.name}),
 		        success: function (response) {
-		        	$("#user").val(response.id);
+		        	$("#userid").val(response.id);
 		        }
 		      });   
 		    });
