@@ -1,31 +1,21 @@
 package com.fmiproject.login.dto;
 
-import java.io.Serializable;
 import java.util.*;
-public class ListGames implements Serializable {
+
+public class ListGames {
 	
-	private static final long serialVersionUID = 1L;
-	private Long gameID;
-	private Long stateID;
-        private List<String> gameList;
+        public static List<GamesDTO> games;
         
-        
-        public List ListGames(Long gameID, Long stateID) {
-            return gameList;
+        public static class GamesDTO { 
+                private String gameID;
+		private Long stateID;
+               
+                public String getGameID() {
+                    return gameID;
+                }   
+
+                public Long getStateID() {
+                    return stateID;
+                }
         }
-        
-	public Long getGameID() {
-		return gameID;
-	}
-        public void setGameID(Long gameID) {
-		this.gameID = gameID;
-	}
-
-	public Long getStateID() {
-		return stateID;
-	}
-
-	public void setStateID(Long stateID) {
-		this.stateID = stateID;
-	}
 }
