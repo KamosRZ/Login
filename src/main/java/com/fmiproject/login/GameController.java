@@ -47,7 +47,7 @@ public class GameController {
 					.getForEntity(new URI("https://ug-game-api.azurewebsites.net/api/games/to_join"), ListGames.class);
 			List<GamesDTO> gamesList = responseDTO.getBody().getData().getGames();
 			response = gamesList.get(gamesList.size() - 1).getGameID();
-                        restTemplate.put(new URI("https://ug-game-api.azurewebsites.net/game/" + response), JoinGameDTO.class);
+            restTemplate.put(new URI("https://ug-game-api.azurewebsites.net/api/game/" + response), new JoinGameDTO(userid));
 		}
 		return response;
 	}
