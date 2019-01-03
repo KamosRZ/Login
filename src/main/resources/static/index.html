@@ -35,7 +35,7 @@
 		</div>	
 		<div class="authenticated">
 			<div class="menu">
-				<input type="hidden" name="userid" id="userid">
+				<input type="hidden" name="userid" id="userid" value="123">
 				<fieldset class="form-group">
 				    <legend>Menu</legend>
 				    <div class="form-check">
@@ -60,7 +60,11 @@
 			  </div>
 			  <button type="submit" class="btn btn-primary" id="submit">Go !</button>
 			</div>
-			<span class="game-id"></span>
+			<div class="game-container">
+				<span class="game-id"></span>
+				<br/>
+				<span class="game-label"></span>
+			</div>
 		</div>	
 		<script type="text/javascript" src="webjars/jquery/jquery.min.js"></script>
 	    <script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -83,8 +87,23 @@
 				    		    function(gameId){
 				    				$(".menu").hide();
 				    				$(".game-id").text("Created game id: " + gameId);
+				    				$(".game-label").text("Waiting for second player to join...");
+				    				setTimeout(function(){
+				    					$.get( "/game/check/" + gameId, function( data ) {
+				    						  if (data == 4 || data == 5) {
+				    							  $(".game-label").text("Second player joined !"); 
+				    						  }
+				    						});
+				    				}, 10000);
 				    		});
-			    	}		
+			    	}
+			    	if ($('#join-radio').is(':checked')) {
+			    		$.post('/game', { userid: $("#userid").val(), action : "join", role : $("#role").val()}, 
+				    		    function(gameId){
+				    				$(".menu").hide();
+				    				$(".game-id").text("Joint to game id: " + gameId);
+				    		});
+			    	}
 				});
 			    
 			   	$(".role-container").hide();
