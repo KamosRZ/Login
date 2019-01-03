@@ -10,7 +10,7 @@ public class ListGames implements Serializable {
         private List<String> gameList;
         
         
-        public List gameList(Long gameID, Long stateID) {
+        public List ListGames(Long gameID, Long stateID) {
             return gameList;
         }
         
