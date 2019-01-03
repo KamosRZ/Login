@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fmiproject.login.dto.CheckGameStatusResponseDTO;
 import com.fmiproject.login.dto.CreateGameDTO;
-import com.fmiproject.login.dto.JoinGameDTO;
 import com.fmiproject.login.dto.ListGames;
 import com.fmiproject.login.dto.ResponseDTO;
 
