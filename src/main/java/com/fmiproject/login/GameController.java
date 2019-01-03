@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fmiproject.login.dto.CheckGameStatusResponseDTO;
 import com.fmiproject.login.dto.CreateGameDTO;
+import com.fmiproject.login.dto.JoinGameDTO;
 import com.fmiproject.login.dto.ListGames;
 import com.fmiproject.login.dto.ListGames.GamesDTO;
 import com.fmiproject.login.dto.ResponseDTO;
@@ -46,6 +47,7 @@ public class GameController {
 					.getForEntity(new URI("https://ug-game-api.azurewebsites.net/api/games/to_join"), ListGames.class);
 			List<GamesDTO> gamesList = responseDTO.getBody().getData().getGames();
 			response = gamesList.get(gamesList.size() - 1).getGameID();
+                        restTemplate.put(new URI("https://ug-game-api.azurewebsites.net/game/" + response), JoinGameDTO.class);
 		}
 		return response;
 	}
