@@ -35,7 +35,7 @@
 		</div>	
 		<div class="authenticated">
 			<div class="menu">
-				<input type="hidden" name="userid" id="userid" value="123">
+				<input type="hidden" name="userid" id="userid">
 				<fieldset class="form-group">
 				    <legend>Menu</legend>
 				    <div class="form-check">
@@ -99,7 +99,7 @@
 				    		});
 			    	}
 			    	if ($('#join-radio').is(':checked')) {
-			    		$.post('/game', { userid: $("#userid").val(), action : "join", role : $("#role").val()}, 
+			    		$.post('/game', { userid: Math.floor((Math.random() * 50) + 1), action : "join", role : $("#role").val()}, 
 				    		    function(gameId){
 				    				$(".menu").hide();
 				    				$(".game-id").text("Join to game id: " + gameId);
@@ -118,7 +118,7 @@
 		    $.ajax
 		      ({
 		        type: "POST",
-		        url: 'https://ec2-34-209-175-216.us-west-2.compute.amazonaws.com:8080/user-service/api/user/create',
+		        url: 'https://test-api-provider.com/user-service/api/user/create',
 		        dataType: 'json',
 		        contentType: 'application/json',
 		        async: false,
