@@ -88,13 +88,14 @@
 				    				$(".menu").hide();
 				    				$(".game-id").text("Created game id: " + gameId);
 				    				$(".game-label").text("Waiting for second player to join...");
-				    				setTimeout(function(){
+				    				var intervalId = setInterval(function(){
 				    					$.get( "/game/check/" + gameId, function( data ) {
 				    						  if (data == 4 || data == 5) {
 				    							  $(".game-label").text("Second player joined !"); 
+				    							  clearInterval(intervalId);
 				    						  }
 				    						});
-				    				}, 10000);
+				    				}, 5000);
 				    		});
 			    	}
 			    	if ($('#join-radio').is(':checked')) {
