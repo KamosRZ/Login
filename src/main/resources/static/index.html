@@ -58,7 +58,14 @@
 			      <option value="2">Responder</option>
 			    </select>
 			  </div>
-			  <button type="submit" class="btn btn-primary" id="submit">Go !</button>
+
+			<div class="form-group games-list-container" style="display: none;">
+				<label for="games-select">Select game to join</label> <select
+					class="form-control" id="games-select" name="games-select">
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-primary" id="submit">Go !</button>
 			</div>
 			<div class="game-container">
 				<span class="game-id"></span>
@@ -73,17 +80,9 @@
 	    <script type="text/javascript">
 	    
 		    $( document ).ready(function() {
-		    	$( "#start-radio" ).click(function() {
-			    	$( ".role-container" ).show();
-			    });
-			    	
-			    $( "#join-radio" ).click(function() {
-				    $( ".role-container" ).hide();
-				});
-			    
 			    $( "#submit" ).click(function() {
 			    	if ($('#start-radio').is(':checked')) {
-				    	$.post('/game', { userid: $("#userid").val(), action : "start", role : $("#role").val()}, 
+				    	$.get('/game/create', { userid: $("#userid").val(), role : $("#role").val()}, 
 				    		    function(gameId){
 				    				$(".menu").hide();
 				    				$(".game-id").text("Created game id: " + gameId);
@@ -99,13 +98,31 @@
 				    		});
 			    	}
 			    	if ($('#join-radio').is(':checked')) {
-			    		$.post('/game', { userid: Math.floor((Math.random() * 50) + 1), action : "join", role : $("#role").val()}, 
+			    		$.get('/game/join', { userid: $("#userid").val(), gameid: $('#games-select').val()}, 
 				    		    function(gameId){
 				    				$(".menu").hide();
-				    				$(".game-id").text("Join to game id: " + gameId);
+				    				$(".game-id").text("Joined to game id: " + $('#games-select').val());
 				    		});
 			    	}
 				});
+			    
+			    $( "#join-radio" ).click(function() {
+			    	$( ".role-container" ).hide();
+			    	$.get("https://ug-game-api.azurewebsites.net/api/games/to_join", function(response){
+			    		$.each(response.data.games, function(key, value) {   
+			    		     $('#games-select')
+			    		         .append($("<option></option>")
+			    		                    .attr("value",value.gameID)
+			    		                    .text(value.gameID)); 
+			    		});
+			    	});
+					$(".games-list-container").show();
+				});
+			    
+		    	$( "#start-radio" ).click(function() {
+			    	$( ".role-container" ).show();
+			    	$(".games-list-container").hide();
+			    });
 			    
 			   	$(".role-container").hide();
 			    $(".authenticated").hide();
