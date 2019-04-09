@@ -72,13 +72,24 @@
 				<br/>
 				<span class="game-label"></span>
 				
-				<div class="form-group amount-split-container" style="display: none;">
+				<div class="form-group proposer-container" style="display: none;">
 					<label for="games-select">Value for proposer</label> 
 					<input type="text" class="form-control" id="proposer-value" name="proposer-value">
 					
 					<label for="games-select">Value for responder</label> 
 					<input type="text" class="form-control" id="responder-value" name="responder-value">
 					<button type="submit" class="btn btn-primary" id="propose">Propose</button>
+				</div>
+				
+				<div class="form-group responder-container" style="display: none;">
+					<label for="games-select">Value for proposer</label> 
+					<input type="text" class="form-control" class="proposer-value-label" disabled>
+					
+					<label for="games-select">Value for responder</label> 
+					<input type="text" class="form-control" class="responder-value-label" disabled>
+					
+					<button type="submit" class="btn btn-primary" id="accept">Accept</button>
+					<button type="submit" class="btn btn-primary" id="reject">Reject</button>
 				</div>
 			</div>
 		</div>	
@@ -108,7 +119,10 @@
 				    							  
 				    							  $.get("https://ug-game-api.azurewebsites.net/api/game/" + activeGameId, function(response){
 											    		if (response.data.game.proposerID == $("#userid").val()) {
-											    			$( ".amount-split-container" ).show();
+											    			$( ".proposer-container" ).show();
+											    		} else {
+											    			$( ".responder-container" ).show();
+											    			waitForProposal(activeGameId);
 											    		}
 											    	});
 				    						  }
@@ -124,13 +138,38 @@
 				    				activeGameId = $('#games-select').val();
 				    				
 				    				$.get("https://ug-game-api.azurewebsites.net/api/game/" + activeGameId, function(response){
-							    		if (response.data.game.proposerID == $("#userid").val()) {
-							    			$( ".amount-split-container" ).show();
-							    		}
+							    		/* if (response.data.game.proposerID == $("#userid").val()) {
+							    			$( ".proposer-container" ).show();
+							    		} else { */
+							    			$( ".responder-container" ).show();
+							    			waitForProposal(activeGameId);
+							    		/* } */
 							    	});
 				    		});
 			    	}
 				});
+			    
+			    function waitForProposal(activeGameId) {
+			    	var intervalId = setInterval(function(){
+			    		$.ajax
+					      ({
+					        type: "GET",
+					        url: 'https://ug-game-api.azurewebsites.net/api/game/' + activeGameId,
+					        dataType: 'json',
+					        contentType: 'application/json',
+					        async: false,
+					        data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val()}),
+					        success: function (response) {
+					        	if (response.data.game.valueForProposer !== 'undefined' && response.data.game.valueForResponder !== 'undefined') {
+	    							  $(".proposer-value-label").val(response.data.game.valueForProposer); 
+	    							  $(".responder-value-label").val(response.data.game.valueForResponder);
+	    							  
+	    							  clearInterval(intervalId);
+	    						  }
+					        }
+					      });
+    				}, 5000);
+			    };
 			    
 			    $( "#propose" ).click(function() {
 			    	$.ajax
