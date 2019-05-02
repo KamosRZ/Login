@@ -1,103 +1,109 @@
 <!doctype html>
 <html lang="bg">
-	<head>
-	    <meta charset="utf-8"/>
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	    <title>Login</title>
-	    <meta name="description" content=""/>
-	    <meta name="viewport" content="width=device-width"/>
-	    <base href="/"/>
-	    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
-	    <link rel="stylesheet" type="text/css" href="webjars/font-awesome/4.7.0/css/font-awesome.css"/>
-	    <link rel="stylesheet" type="text/css" href="webjars/bootstrap-social/5.1.1/bootstrap-social.css"/>
-	</head>
-	
-	<body>
-		<nav class="navbar navbar-default">
-		  <div class="container-fluid">
-		    <div class="navbar-header">
-		      <a class="navbar-brand" href="/">Ultimatum game</a>
-		    </div>
-		    <div class="authenticated">
-		    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: none;">
-			      <ul class="nav navbar-nav navbar-right">
-			      	<p class="navbar-text">Signed in as <span id="user"></span></p>
-			        <li><a href="#" onClick="logout()">Logout</a></li>
-			      </ul>
-		    	</div>
-		    </div>
-		  </div>
-		</nav>
-		<div class="container unauthenticated">
-			<a class="btn btn-block btn-social btn-facebook" href="/login/facebook">
-	    		<span class="fa fa-facebook"></span> Sign in with Facebook
-	  		</a>
-		</div>	
-		<div class="authenticated">
-			<div class="menu">
-				<input type="hidden" name="userid" id="userid">
-				<fieldset class="form-group">
-				    <legend>Menu</legend>
-				    <div class="form-check">
-				      <label class="form-check-label">
-				        <input type="radio" class="form-check-input" name="action" id="start-radio" value="start">
-				        Start new game
-				      </label>
-				    </div>
-				    <div class="form-check">
-				    	<label class="form-check-label">
-				        	<input type="radio" class="form-check-input" name="action" id="join-radio" value="join">
-				        Join game
-				      	</label>
-				    </div>
-			  </fieldset>
-			  <div class="form-group role-container">
-			    <label for="role-select">Select role</label>
-			    <select class="form-control" id="role" name="role">
-			      <option value="1">Proposer</option>
-			      <option value="2">Responder</option>
-			    </select>
-			  </div>
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<title>Login</title>
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width"/>
+	<base href="/"/>
+	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="webjars/font-awesome/4.7.0/css/font-awesome.css"/>
+	<link rel="stylesheet" type="text/css" href="webjars/bootstrap-social/5.1.1/bootstrap-social.css"/>
+</head>
 
-			<div class="form-group games-list-container" style="display: none;">
-				<label for="games-select">Select game to join</label> <select
-					class="form-control" id="games-select" name="games-select">
-				</select>
+<body>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">Ultimatum game</a>
+		</div>
+		<div class="authenticated">
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: none;">
+				<ul class="nav navbar-nav navbar-right">
+					<p class="navbar-text">Signed in as <span id="user"></span></p>
+					<li><a href="#" onClick="logout()">Logout</a></li>
+				</ul>
 			</div>
-			
-			<button type="submit" class="btn btn-primary" id="submit">Go !</button>
+		</div>
+	</div>
+</nav>
+<div class="container unauthenticated">
+	<a class="btn btn-block btn-social btn-facebook" href="/login/facebook">
+		<span class="fa fa-facebook"></span> Sign in with Facebook
+	</a>
+</div>
+<div class="authenticated">
+	<div class="menu">
+		<input type="hidden" name="userid" id="userid">
+		<fieldset class="form-group">
+			<legend>Menu</legend>
+			<div class="form-check">
+				<label class="form-check-label">
+					<input type="radio" class="form-check-input" name="action" id="start-radio" value="start">
+					Start new game
+				</label>
 			</div>
-			<div class="game-container">
-				<span class="game-id"></span>
-				<br/>
-				<span class="game-label"></span>
-				
-				<div class="form-group proposer-container" style="display: none;">
-					<label for="games-select">Value for proposer</label> 
-					<input type="text" class="form-control" id="proposer-value" name="proposer-value">
-					
-					<label for="games-select">Value for responder</label> 
-					<input type="text" class="form-control" id="responder-value" name="responder-value">
-					<button type="submit" class="btn btn-primary" id="propose">Propose</button>
-				</div>
-				
-				<div class="form-group responder-container" style="display: none;">
-					<label for="games-select">Value for proposer</label> 
-					<input type="text" class="form-control" class="proposer-value-label" disabled>
-					
-					<label for="games-select">Value for responder</label> 
-					<input type="text" class="form-control" class="responder-value-label" disabled>
-					
-					<button type="submit" class="btn btn-primary" id="accept">Accept</button>
-					<button type="submit" class="btn btn-primary" id="reject">Reject</button>
-				</div>
+			<div class="form-check">
+				<label class="form-check-label">
+					<input type="radio" class="form-check-input" name="action" id="join-radio" value="join">
+					Join game
+				</label>
 			</div>
-		</div>	
-		<script type="text/javascript" src="webjars/jquery/jquery.min.js"></script>
-	    <script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	    <script type="text/javascript" src="webjars/js-cookie/js.cookie.js"></script>
-		
-	    <script type="text/javascript">
+		</fieldset>
+		<div class="form-group role-container">
+			<label for="role-select">Select role</label>
+			<select class="form-control" id="role" name="role">
+				<option value="1">Proposer</option>
+				<option value="2">Responder</option>
+			</select>
+		</div>
+
+		<div class="form-group games-list-container" style="display: none;">
+			<label for="games-select">Select game to join</label> <select
+				class="form-control" id="games-select" name="games-select">
+		</select>
+		</div>
+
+		<button type="submit" class="btn btn-primary" id="submit">Go !</button>
+	</div>
+	<div class="game-container">
+		<span class="game-id"></span>
+		<br/>
+		<span class="game-label"></span>
+        <br/>
+        <span class="offer-game-label"></span>
+
+		<div class="form-group proposer-container" style="display: none;">
+			<label for="games-select">Value for proposer</label>
+			<input type="text" class="form-control" id="proposer-value" name="proposer-value">
+
+			<label for="games-select">Value for responder</label>
+			<input type="text" class="form-control" id="responder-value" name="responder-value">
+			<button type="submit" class="btn btn-primary" id="propose">Propose</button>
+		</div>
+
+		<div class="form-group responder-container" style="display: none;">
+			<label for="games-select">Value for proposer</label>
+			<input type="text" class="form-control" class="proposer-value-label" disabled>
+
+			<label for="games-select">Value for responder</label>
+			<input type="text" class="form-control" class="responder-value-label" disabled>
+
+		</div>
+
+		<div class="form-group responder-container-offer" style="display: none;">
+			<button type="submit" class="btn btn-primary" id="accept">Accept</button>
+			<button type="submit" class="btn btn-primary" id="reject">Reject</button>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript" src="webjars/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="webjars/js-cookie/js.cookie.js"></script>
+
+<script type="text/javascript">
 	    
 		    $( document ).ready(function() {
 		    	var activeGameId;
@@ -121,15 +127,18 @@
 											    		if (response.data.game.proposerID == $("#userid").val()) {
 											    			$( ".proposer-container" ).show();
 											    		} else {
-											    			$( ".responder-container" ).show();
+											    			// $( ".responder-container" ).show();
+											    			$(".offer-game-label").text("Waiting for offer...");
 											    			waitForProposal(activeGameId);
 											    		}
 											    	});
 				    						  }
 				    						});
 				    				}, 5000);
-				    		});
-			    	}
+
+				    	});
+                    }
+
 			    	if ($('#join-radio').is(':checked')) {
 			    		$.get('/game/join', { userid: $("#userid").val(), gameid: $('#games-select').val()}, 
 				    		    function(gameId){
@@ -138,12 +147,14 @@
 				    				activeGameId = $('#games-select').val();
 				    				
 				    				$.get("https://ug-game-api.azurewebsites.net/api/game/" + activeGameId, function(response){
-							    		/* if (response.data.game.proposerID == $("#userid").val()) {
+							    		if (response.data.game.proposerID == $("#userid").val()) {
 							    			$( ".proposer-container" ).show();
-							    		} else { */
-							    			$( ".responder-container" ).show();
+							    		} else {
+							    			//$( ".responder-container" ).show();
+							    			$(".offer-game-label").text("Waiting for offer...");
 							    			waitForProposal(activeGameId);
-							    		/* } */
+
+							    		  }
 							    	});
 				    		});
 			    	}
@@ -160,10 +171,15 @@
 					        async: false,
 					        data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val()}),
 					        success: function (response) {
-					        	if (response.data.game.valueForProposer !== 'undefined' && response.data.game.valueForResponder !== 'undefined') {
-	    							  $(".proposer-value-label").val(response.data.game.valueForProposer); 
-	    							  $(".responder-value-label").val(response.data.game.valueForResponder);
-	    							  
+					        	if (response.data.game.valueForProposer >= 0 && response.data.game.valueForResponder >= 0) {
+	    							  //$(".proposer-value-label").val(response.data.game.valueForProposer);
+	    							  //$(".responder-value-label").val(response.data.game.valueForResponder);
+
+	    							  $(".offer-game-label").text("Offer is: " + response.data.game.valueForProposer
+	    							                           + "/" + response.data.game.valueForResponder);
+                                      if ($("#userid").val() == response.data.game.responderID) {
+                                            $( ".responder-container-offer" ).show();
+	    							  }
 	    							  clearInterval(intervalId);
 	    						  }
 					        }
@@ -185,8 +201,43 @@
 				        	console.log(response);
 				        }
 				      });
+				      $( ".proposer-container" ).hide();
+				      $(".offer-game-label").text("Offer sent! Waiting for response...");
+
 			    });
-			    
+
+			    $( "#accept" ).click(function() {
+			        $( ".responder-container-offer" ).hide();
+			        $.ajax
+			        ({
+			            type: "PUT",
+				        url: 'https://ug-game-api.azurewebsites.net/api/game/' + activeGameId + '/proposal',
+				        dataType: 'json',
+				        contentType: 'application/json',
+				        async: false,
+                        data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val(), "responseID" : 1}),
+                        success: function(response) {
+                            console.log(response);
+                        }
+                     });
+                });
+
+			    $( "#reject" ).click(function() {
+			        $( ".responder-container-offer" ).hide();
+			        $.ajax
+			        ({
+			            type: "PUT",
+				        url: 'https://ug-game-api.azurewebsites.net/api/game/' + activeGameId + '/proposal',
+				        dataType: 'json',
+				        contentType: 'application/json',
+				        async: false,
+                        data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val(), "responseID" : 2}),
+                        success: function(response) {
+                            console.log(response);
+                        }
+                     });
+                });
+
 			    $( "#join-radio" ).click(function() {
 			    	$( ".role-container" ).hide();
 			    	$.get("https://ug-game-api.azurewebsites.net/api/games/to_join", function(response){
@@ -249,6 +300,6 @@
 		     }
 		    });
 		</script>
-	</body>
+</body>
 
 </html>
