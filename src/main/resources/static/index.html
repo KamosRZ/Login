@@ -217,7 +217,15 @@
 				        async: false,
                         data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val(), "responseID" : 1}),
                         success: function(response) {
-                            console.log(response);
+                        	$.ajax
+	      				      ({
+	      				        type: "POST",
+	      				        url: 'https://test-api-provider.com/score-service/api/scoreboard/set',
+	      				        dataType: 'json',
+	      				        contentType: 'application/json',
+	      				        async: false,
+	      				        data: JSON.stringify({"points": $("#responder-value").val(), "userId" : $("#userid").val()})
+	      				      });
                         }
                      });
                 });
