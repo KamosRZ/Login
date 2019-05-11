@@ -73,24 +73,9 @@
 		<span class="game-label"></span>
         <br/>
         <span class="offer-game-label"></span>
-
-		<div class="form-group proposer-container" style="display: none;">
-			<label for="games-select">Value for proposer</label>
-			<input type="text" class="form-control" id="proposer-value" name="proposer-value">
-
-			<label for="games-select">Value for responder</label>
-			<input type="text" class="form-control" id="responder-value" name="responder-value">
-			<button type="submit" class="btn btn-primary" id="propose">Propose</button>
-		</div>
-
-		<div class="form-group responder-container" style="display: none;">
-			<label for="games-select">Value for proposer</label>
-			<input type="text" class="form-control" class="proposer-value-label" disabled>
-
-			<label for="games-select">Value for responder</label>
-			<input type="text" class="form-control" class="responder-value-label" disabled>
-
-		</div>
+        
+        <input type="hidden" class="form-control" id="proposer-value" name="proposer-value">
+        <input type="hidden" class="form-control" id="responder-value" name="responder-value">
 
 		<div class="form-group responder-container-offer" style="display: none;">
 			<button type="submit" class="btn btn-primary" id="accept">Accept</button>
@@ -172,8 +157,8 @@
 					        data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val()}),
 					        success: function (response) {
 					        	if (response.data.game.valueForProposer >= 0 && response.data.game.valueForResponder >= 0) {
-	    							  //$(".proposer-value-label").val(response.data.game.valueForProposer);
-	    							  //$(".responder-value-label").val(response.data.game.valueForResponder);
+	    							  $(".proposer-value").val(response.data.game.valueForProposer);
+	    							  $(".responder-value").val(response.data.game.valueForResponder);
 
 	    							  $(".offer-game-label").text("Offer is: " + response.data.game.valueForProposer
 	    							                           + "/" + response.data.game.valueForResponder);
@@ -226,6 +211,8 @@
 	      				        async: false,
 	      				        data: JSON.stringify({"points": $("#responder-value").val(), "userId" : $("#userid").val()})
 	      				      });
+                        	
+                        	$(".offer-game-label").text("Offer Accepted!");
                         }
                      });
                 });
@@ -241,7 +228,7 @@
 				        async: false,
                         data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val(), "responseID" : 2}),
                         success: function(response) {
-                            console.log(response);
+                        	$(".offer-game-label").text("Offer rejected!");
                         }
                      });
                 });
