@@ -21,7 +21,8 @@
 		<div class="authenticated">
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: none;">
 				<ul class="nav navbar-nav navbar-right">
-					<p class="navbar-text">Signed in as <span id="user"></span></p>
+					<p class="navbar-text">Signed in as <span id="user"></span> <br/>
+					(POINTS: <span id="points" style="color: red;"></span>, GAMES: <span id="games" style="color: red;"></span>)</p>
 					<li><a href="#" onClick="logout()">Logout</a></li>
 				</ul>
 			</div>
@@ -306,7 +307,8 @@
 		    });
 	    
 		    $.get("/user", function(data) {
-		        $("#user").html(data.userAuthentication.details.name);
+		        $("#user").html(data.userAuthentication.details.name);	
+		     		        
 		        $(".unauthenticated").hide()
 		        $(".authenticated").show()      
 			    $.ajax
@@ -320,7 +322,12 @@
 			        success: function (response) {
 			        	$("#userid").val(response.id);
 			        }
-			      });   
+			      });
+		        
+		        $.get( "https://test-api-provider.com/score-service/scoreboard/get?userId=" + $('#userid').val(), function( data ) {
+		        	  $("#points").html(data.totalPoints);
+		        	  $("#games").html(data.totalGames);
+		        });
 		    });
 	
 		    var logout = function() {
