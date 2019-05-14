@@ -211,6 +211,15 @@
 	      				      		    });
 									} else {
 									    $(".response-game-label").text("Your offer was rejected!");
+									    $.ajax
+	      				        	    ({
+	      				        		    type: "POST",
+	      				        		    url: 'https://test-api-provider.com/score-service/scoreboard/set',
+	      				        		    dataType: 'json',
+	      				        		    contentType: 'application/json',
+	      				        		    async: false,
+	      				       			    data: JSON.stringify({"points": "0", "userId" : $("#userid").val()})
+	      				      		    });
 									}
 	    					    	clearInterval(intervalId);
 	    					    }
@@ -280,6 +289,15 @@
                         data: JSON.stringify({"gameID": activeGameId, "playerID" : $("#userid").val(), "responseID" : 2}),
                         success: function(response) {
                         	$(".offer-game-label").text("Offer rejected!");
+                        	$.ajax
+	      				    ({
+	      				    	type: "POST",
+	      				        url: 'https://test-api-provider.com/score-service/scoreboard/set',
+	      				        dataType: 'json',
+	      				        contentType: 'application/json',
+	      				        async: false,
+	      				       	data: JSON.stringify({"points": "0", "userId" : $("#userid").val()})
+	      				    });
                         }
                      });
                 });
