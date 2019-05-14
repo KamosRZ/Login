@@ -207,7 +207,7 @@
 	      				        		    dataType: 'json',
 	      				        		    contentType: 'application/json',
 	      				        		    async: false,
-	      				       			    data: JSON.stringify({"points": response.data.game.valueForProposer, "userId" : $("#userid").val()})
+	      				       			    data: JSON.stringify({"points": response.data.game.valueForProposer.toString(), "userId" : $("#userid").val()})
 	      				      		    });
 									} else {
 									    $(".response-game-label").text("Your offer was rejected!");
